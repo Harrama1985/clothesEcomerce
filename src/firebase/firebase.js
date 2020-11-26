@@ -15,11 +15,31 @@ var firebaseConfig = {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 
-export const auth = firebase.auth();
-export const firestore = firebase.firestore();
+  export const auth = firebase.auth();
+  export const firestore = firebase.firestore();
+
+export const creatUserProfilDoc = async (userAuth, restData)=>{
+    console.log(userAuth);
+    if(!userAuth){
+      return;
+    }
+    
+    const userRef = firestore.doc(`users/${userAuth.uid}`) // hadi katcree lia wahed ref kathot fih uid 
+    const snapchat = await userRef.get() // hadi katjib hadak ref om3ah exist wach true ola false 
+    if(!snapchat.exists){ // ohna kancheker wach exsit true ola false 
+        const {displayName , email} = userAuth;
+        const createAt = new Date()
+        try {
+          await userRef.set({displayName,email,createAt,...restData})
+        } catch (error) {
+          console.log(error);
+        }
+    }
+    return userRef
+}
 
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: 'select_account' });
-export const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
+export const signInGoogle = () => auth.signInWithPopup(googleProvider);
 
 export default firebase;
