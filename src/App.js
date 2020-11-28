@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react'
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import HeaderContainer from './containers/HeaderContainer'
@@ -7,32 +7,44 @@ import {GlobalStyle} from './GlobalStyles'
 import SignInUp from './pages/SignIn-Up';
 import ContainerFluid from './components/ContainerFluid'
 import {auth,creatUserProfilDoc} from './firebase/firebase'
-
-function App() {
-  const [currentUser, setCurrentUser] = useState({})
+import { connect } from 'react-redux';
+import {setCurrentUser} from './redux/user/userActions'
+function App(props) {
   useEffect(() => {
     const userSubscribe = auth.onAuthStateChanged(async(userAuth)=> {  //ila dar login ola khrej chihad odkhal chihad
       if(userAuth){
         const userRef = await creatUserProfilDoc(userAuth) 
-        userRef.onSnapshot(snap=>setCurrentUser({id:snap.id,...snap.data()}))  
+        userRef.onSnapshot(snap=>props.setCurrentUser({id:snap.id,...snap.data()}))  
+
       }else{
-        setCurrentUser(userAuth) // hna radi ikoun userAuth null
+        props.setCurrentUser(userAuth) // hna radi ikoun userAuth null
       }
     })
+    return ()=> userSubscribe()
   }, [])
   return (
     <>
     <GlobalStyle />
-    <HeaderContainer currentUser={currentUser}/>
+    <HeaderContainer/>
     <ContainerFluid>
     <Switch>
       <Route exact path ='/' component={Home} />
       <Route path='/shop' component={Shop} />
-      <Route path='/signin' component={SignInUp} />
+      
+      <Route path='/signin' render={()=>{ return props.currentUser ? <Redirect to='/'/> : <SignInUp />}} />
     </Switch>
     </ContainerFluid>
     </>
   );
 }
-
-export default App;
+const mapStateToProps = ({user})=>{
+  return {
+      currentUser : user.currentUser
+  }
+}
+const mapDispatchToProps = (dispatch)=>{
+  return{
+    setCurrentUser: user=> dispatch(setCurrentUser(user))
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(App);

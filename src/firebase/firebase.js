@@ -18,9 +18,10 @@ var firebaseConfig = {
   export const auth = firebase.auth();
   export const firestore = firebase.firestore();
 
+  //add new user to firestore
 export const creatUserProfilDoc = async (userAuth, restData)=>{
-    console.log(userAuth);
-    if(!userAuth){
+    
+  if(!userAuth){ //__________________________________
       return;
     }
     

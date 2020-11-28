@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro';
-//import CustomButton from '../custom-button/custom-button.component';
+import ButtonCustum from '../../ButtonCustum';
 
 export const Container = styled.div`
 display:flex;
@@ -13,6 +13,7 @@ export const Title = styled.h3`
 `
 
 export const BgImg = styled.div`
+  transition:.7s;
   width: 100%;
   height: 95%;
   background-size: cover;
@@ -20,8 +21,6 @@ export const BgImg = styled.div`
   margin-bottom: 5px;
   background-image: ${({ imageUrl }) => `url(${imageUrl})`};
 `;
-
-BgImg.displayName = 'BackgroundImage';
 
 export const Item = styled.div`
   width: 24%;
@@ -35,10 +34,11 @@ export const Item = styled.div`
     ${BgImg} {
       opacity: 0.8;
     }
-/*     button {
+    button {
+      transition:.7s;
       opacity: 0.85;
       display: flex;
-    } */
+    } 
   }
   @media screen and (max-width: 800px) {
     width: 45%;
@@ -46,9 +46,9 @@ export const Item = styled.div`
       ${BgImg} {
         opacity: unset;
       }
-     /*  button {
+      button {
         opacity: unset;
-      } */
+      } 
     }
   }
   @media screen and (max-width: 500px) {
@@ -57,14 +57,14 @@ export const Item = styled.div`
       ${BgImg} {
         opacity: unset;
       }
-     /*  button {
+      button {
         opacity: unset;
-      } */
+      } 
     }
   }
 `;
 
-/* export const AddButton = styled(CustomButton)`
+export const AddButton = styled(ButtonCustum)`
   width: 80%;
   opacity: 0.7;
   position: absolute;
@@ -76,11 +76,7 @@ export const Item = styled.div`
     min-width: unset;
     padding: 0 10px;
   }
-`; */
-
-//AddButton.displayName = 'AddButton';
-
-
+`; 
 
 export const Content = styled.div`
   width: 100%;
@@ -90,18 +86,14 @@ export const Content = styled.div`
   font-size: 1.8rem;
 `;
 
-Content.displayName = 'Content';
 
 export const Name = styled.span`
   width: 90%;
   margin-bottom: 15px;
 `;
 
-Name.displayName = 'Name';
 
 export const Price = styled.span`
   width: 10%;
   text-align: right;
 `;
-
-Price.displayName = 'Price';
