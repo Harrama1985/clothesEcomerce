@@ -1,18 +1,23 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import { toggelCartHidden } from '../../redux/cart/cartActions';
+import { selectCartItemCount } from '../../redux/cart/cartSelectors';
 import {CartContainer,IconCart,ItemCounter} from './styles/cartIcon'
 
-function CartIcon({toggelCartHidden,...restProps}) {
+function CartIcon({toggelCartHidden,itemCount}) {
     return (
-        <CartContainer onClick={toggelCartHidden} {...restProps} >
+        <CartContainer onClick={toggelCartHidden} >
             <IconCart/>
-            <ItemCounter {...restProps}>0</ItemCounter>
+            <ItemCounter>{itemCount}</ItemCounter>
         </CartContainer>
     )
 }
-
-export default connect(null,{toggelCartHidden})(CartIcon);
+const mapStateToProps =(state)=>{
+    return {
+        itemCount:selectCartItemCount(state)
+    }
+}
+export default connect(mapStateToProps,{toggelCartHidden})(CartIcon);
 
 
 

@@ -20,7 +20,7 @@ export const Container = styled.div`
   margin-top: auto;
 `; */
 
-export const EmptyMessageContainer = styled.span`
+export const EmptyCart = styled.span`
   font-size: 18px;
   margin: 50px auto;
 `;

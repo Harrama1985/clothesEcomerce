@@ -5,3 +5,14 @@ export const addItem=(listItems,itemToAdd)=>{
     }    
     return [...listItems,{...itemToAdd,quantity:1}]
 }
+
+export const clearItem = (listItems , itemToClean)=>{
+    return listItems.filter(item=>item.id!==itemToClean.id)
+}
+
+export const removeItem =(listItems , itemToRemove)=>{
+    if(itemToRemove.quantity <= 1){
+        return listItems.filter(item=>item.id!==itemToRemove.id)
+    }
+    return listItems.map(item=> item.id === itemToRemove.id ? {...item,quantity:item.quantity-1} : item)
+}

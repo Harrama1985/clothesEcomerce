@@ -4,6 +4,9 @@ import CartDropDown from '../components/CartDropDown'
 import CartIcon from '../components/cartIcon'
 import Header from '../components/header'
 import { auth } from '../firebase/firebase'
+import { selectHidden } from '../redux/cart/cartSelectors'
+import { selectCurrentUser } from '../redux/user/userSelectors'
+import {createStructuredSelector} from 'reselect'
 //import { toggelCartHidden } from '../redux/cart/cartActions'
 
 function HeaderContainer(props) {
@@ -20,12 +23,20 @@ function HeaderContainer(props) {
         </Header>
     )
 }
-const mapStateToProps = ({user,cart})=>{
+/* const mapStateToProps = (state)=>{
     return {
-        currentUser : user.currentUser,
-        hidden: cart.hidden
+        currentUser : selectCurrentUser(state),
+        hidden: selectHidden(state)
     }
-}
+} */
+
+//this is other method makanhtajouch state howa kijibha rasso 
+const mapStateToProps = createStructuredSelector(
+    {
+        currentUser : selectCurrentUser,
+        hidden: selectHidden
+    }
+)
 
 //hna madertch despatch hit dert destraction nichan dial action 
 

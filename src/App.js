@@ -1,14 +1,16 @@
-import React,{useEffect, useState} from 'react'
+import React,{useEffect} from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import HeaderContainer from './containers/HeaderContainer'
 import {GlobalStyle} from './GlobalStyles'
 import SignInUp from './pages/SignIn-Up';
+import Checkout from './pages/Checkout'
 import ContainerFluid from './components/ContainerFluid'
 import {auth,creatUserProfilDoc} from './firebase/firebase'
 import { connect } from 'react-redux';
 import {setCurrentUser} from './redux/user/userActions'
+import { selectCurrentUser } from './redux/user/userSelectors';
 function App(props) {
   useEffect(() => {
     const userSubscribe = auth.onAuthStateChanged(async(userAuth)=> {  //ila dar login ola khrej chihad odkhal chihad
@@ -21,7 +23,7 @@ function App(props) {
       }
     })
     return ()=> userSubscribe()
-  }, [])
+  }, [props])
   return (
     <>
     <GlobalStyle />
@@ -29,7 +31,10 @@ function App(props) {
     <ContainerFluid>
     <Switch>
       <Route exact path ='/' component={Home} />
+      
       <Route path='/shop' component={Shop} />
+
+      <Route path='/checkout' component={Checkout} />
       
       <Route path='/signin' render={()=>{ return props.currentUser ? <Redirect to='/'/> : <SignInUp />}} />
     </Switch>
@@ -37,9 +42,9 @@ function App(props) {
     </>
   );
 }
-const mapStateToProps = ({user})=>{
+const mapStateToProps = (state)=>{
   return {
-      currentUser : user.currentUser
+      currentUser : selectCurrentUser(state)
   }
 }
 const mapDispatchToProps = (dispatch)=>{
