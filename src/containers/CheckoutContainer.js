@@ -9,7 +9,7 @@ function CheckoutContainer({itemsCart,TotalPrice}) {
 
         <CheckoutHeader /> 
 
-        {itemsCart.map(item=><CheckoutItem item={item}/>)}
+        {itemsCart.map(item=><CheckoutItem key={item.id} item={item}/>)}
  
         <div style={{marginTop:'2rem', textAlign:'right', fontSize:'3rem'}}>TOTAL : $ {TotalPrice}</div>
 

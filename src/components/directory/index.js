@@ -2,23 +2,23 @@ import React from 'react'
 
 import {Container,MenuItem,BackgroundImg,Content,ContentTitle,ContentSubTitle} from './styles/directory'
 
-export default function Directory({children,...restProps}) {
+function Directory({children,...restProps}) {
     return (
         <Container {...restProps}>{children}</Container>
     )
 }
 
-Directory.MenuItem = function DirectoryMenuItem({title,imageUrl,size}){
+Directory.MenuItem = function DirectoryMenuItem({title,imageUrl,size,clicked,linkUrl}){
     return <MenuItem size={size}>
         <BackgroundImg imageUrl={imageUrl}/>
-        <Content>
+        <Content onClick={()=>clicked(linkUrl)}>
             <ContentTitle>{title.toUpperCase()}</ContentTitle>
-            <ContentSubTitle>Shop now</ContentSubTitle>
+            <ContentSubTitle >Shop now</ContentSubTitle>
         </Content>
     </MenuItem>
 }
 
-
+export default Directory
 
 
 

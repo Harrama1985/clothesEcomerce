@@ -1,48 +1,28 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import { createStructuredSelector } from 'reselect'
 import Directory from '../components/directory' 
+import { selectDirectorys } from '../redux/directory/directorySelectors'
 
-const sections = [
-    {
-      title: 'hats',
-      imageUrl: 'https://i.ibb.co/cvpntL1/hats.png',
-      id: 1,
-      linkUrl: 'shop/hats'
-    },
-    {
-      title: 'jackets',
-      imageUrl: 'https://i.ibb.co/px2tCc3/jackets.png',
-      id: 2,
-      linkUrl: 'shop/jackets'
-    },
-    {
-      title: 'sneakers',
-      imageUrl: 'https://i.ibb.co/0jqHpnp/sneakers.png',
-      id: 3,
-      linkUrl: 'shop/sneakers'
-    },
-    {
-      title: 'womens',
-      imageUrl: 'https://i.ibb.co/GCCdy8t/womens.png',
-      size: 'large',
-      id: 4,
-      linkUrl: 'shop/womens'
-    },
-    {
-      title: 'mens',
-      imageUrl: 'https://i.ibb.co/R70vBrQ/men.png',
-      size: 'large',
-      id: 5,
-      linkUrl: 'shop/mens'
-    }
-  ];
+
   
-function HomeContainer() {
+function HomeContainer({history,match,sections}) {
+    const handlerClick =(linkUrl)=>{
+        history.push(`${match.url}${linkUrl}`)
+    }
     return  (
         <Directory >
-            {sections.map(({id,...restData})=> (<Directory.MenuItem key={id} {...restData} />)
+            {sections.map(({id,...restData})=> (<Directory.MenuItem key={id} clicked={handlerClick} {...restData} />)
             )}
         </Directory>
     )
 }
 
-export default HomeContainer
+const mapStateToProps = createStructuredSelector(
+  {
+      sections: selectDirectorys
+      
+  }
+)
+export default withRouter(connect(mapStateToProps)(HomeContainer))

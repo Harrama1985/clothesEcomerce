@@ -11,33 +11,36 @@ import {auth,creatUserProfilDoc} from './firebase/firebase'
 import { connect } from 'react-redux';
 import {setCurrentUser} from './redux/user/userActions'
 import { selectCurrentUser } from './redux/user/userSelectors';
-function App(props) {
+function App({currentUser,setCurrentUser}) {
   useEffect(() => {
     const userSubscribe = auth.onAuthStateChanged(async(userAuth)=> {  //ila dar login ola khrej chihad odkhal chihad
       if(userAuth){
         const userRef = await creatUserProfilDoc(userAuth) 
-        userRef.onSnapshot(snap=>props.setCurrentUser({id:snap.id,...snap.data()}))  
-
+        userRef.onSnapshot(snap=>setCurrentUser({id:snap.id,...snap.data()}))  
       }else{
-        props.setCurrentUser(userAuth) // hna radi ikoun userAuth null
+        setCurrentUser(userAuth) // hna radi ikoun userAuth null
       }
     })
     return ()=> userSubscribe()
-  }, [props])
+  }, [setCurrentUser])
   return (
     <>
     <GlobalStyle />
     <HeaderContainer/>
     <ContainerFluid>
+
     <Switch>
+
       <Route exact path ='/' component={Home} />
       
       <Route path='/shop' component={Shop} />
 
-      <Route path='/checkout' component={Checkout} />
+      <Route path='/checkout' render={()=>{ return currentUser ? <Checkout/> : <Redirect to='/signin'/>}} />
       
-      <Route path='/signin' render={()=>{ return props.currentUser ? <Redirect to='/'/> : <SignInUp />}} />
+      <Route path='/signin' render={()=>{ return currentUser ? <Redirect to='/'/> : <SignInUp />}} />
+
     </Switch>
+    
     </ContainerFluid>
     </>
   );
