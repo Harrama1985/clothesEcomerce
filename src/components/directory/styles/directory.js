@@ -3,6 +3,9 @@ import styled from 'styled-components/macro';
 export const Container = styled.div`
 display:flex;
 flex-wrap:wrap;
+@media(max-width:700px){
+  display:block;
+}
 `
 export const BackgroundImg = styled.div`
   width: 100%;
